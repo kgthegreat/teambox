@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110212184746) do
+ActiveRecord::Schema.define(:version => 20110222150934) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id"
@@ -452,8 +452,10 @@ ActiveRecord::Schema.define(:version => 20110212184746) do
     t.integer  "completed_tasks_count"
     t.boolean  "deleted",                                  :default => false,                        :null => false
     t.text     "settings"
+    t.string   "authentication_token"
   end
 
+  add_index "users", ["authentication_token"], :name => "index_users_on_auth_token", :unique => true
   add_index "users", ["deleted"], :name => "index_users_on_deleted"
   add_index "users", ["login"], :name => "index_users_on_login", :unique => true
 
