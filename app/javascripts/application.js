@@ -28,6 +28,7 @@
 //= require <expand_comment>
 //= require <facebox>
 //= require <filter>
+//= require <first_steps>
 //= require <forms>
 //= require <google_docs>
 //= require <history>
