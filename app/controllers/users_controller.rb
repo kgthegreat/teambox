@@ -207,6 +207,10 @@ class UsersController < ApplicationController
     render :text => @current_user.get_stat(key)
   end
 
+  def grant_badge
+    @current_user.grant_badge params[:badge]
+  end
+
   private
     def find_user
       unless @user = ( User.find_by_login(params[:id]) || User.find_by_id(params[:id]) )

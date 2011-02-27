@@ -94,6 +94,7 @@ Teambox::Application.routes.draw do
     match '/account/watch_list' => 'watchers#index', :as => :watch_list
     post  '/account/watch_list/unwatch/:watch_id' => 'watchers#unwatch', :as => :unwatch
     match '/account/stats/:stat/inc' => 'users#increment_stat'
+    match '/account/badge/:badge/grant' => 'users#grant_badge'
 
     resources :teambox_datas, :path => '/datas'
 
