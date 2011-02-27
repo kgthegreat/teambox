@@ -19,5 +19,5 @@ document.on("click", ".first_steps .steps img", function(e,el) {
 });
 
 document.on("dom:loaded", function() {
-  //FirstSteps.showProgress();
+  FirstSteps.showProgress();
 });

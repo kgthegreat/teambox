@@ -18,6 +18,7 @@
 
 //= require <actions>
 //= require <autoresize>
+//= require <badges>
 //= require <banner>
 //= require <colorPicker>
 //= require <comment>
