@@ -65,9 +65,10 @@ class User < ActiveRecord::Base
                   :notify_tasks,
                   :splash_screen,
                   :wants_task_reminder,
-                  :keyboard_shortcuts
+                  :keyboard_shortcuts,
+                  :show_badges
 
-  attr_accessor   :activate, :old_password, :keyboard_shortcuts
+  attr_accessor   :activate, :old_password, :keyboard_shortcuts, :show_badges
 
   before_validation :sanitize_name
   before_destroy :rename_as_deleted
@@ -274,6 +275,14 @@ class User < ActiveRecord::Base
 
   def keyboard_shortcuts=(v)
     self.settings = { 'keyboard_shortcuts' => v == "1" }
+  end
+
+  def show_badges
+    !!settings['show_badges']
+  end
+
+  def show_badges=(v)
+    self.settings = { 'show_badges' => v == "1" }
   end
 
   protected

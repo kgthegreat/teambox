@@ -1,6 +1,8 @@
 FirstSteps = {
+  steps: { completed: 0, total: 5 },
   // Displays the global progress for the first steps
   showOverview: function() {
+    if (!my_user.show_badges) { return; }
     $$(".first_steps").invoke('remove');
     var html = Mustache.to_html(Templates.first_steps.overview);
     $('content').insert({ top: html });
@@ -13,7 +15,6 @@ FirstSteps = {
     this.drawProgressBar();
   },
   // Highlight a step, keep track of the progress
-  steps: { completed: 0, total: 5 },
   activateStep: function(name) {
     var container = $$(".first_steps")[0];
     if (!container) { return; }
@@ -49,8 +50,6 @@ document.on("click", ".first_steps .steps img", function(e,el) {
 });
 
 document.on("dom:loaded", function() {
-  FirstSteps.showOverview();
-
   // If the badge is not granted with JS, then we check the stats
   if (my_user.stats.conversations > 0 && !Badge.has("first_conversation")) {
     Badge.grant("first_conversation");

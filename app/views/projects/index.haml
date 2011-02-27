@@ -1,3 +1,6 @@
+:javascript
+  document.on("dom:loaded", function() { FirstSteps.showOverview(); });
+
 - if @pending_projects.any?
   .invitations
     = list_pending_invites(@pending_projects)

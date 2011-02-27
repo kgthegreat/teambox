@@ -7,6 +7,7 @@ Badge = {
   },
   // Grant a badge, displaying its animation
   grant: function(name) {
+    if (!my_user.show_badges) { return; }
     if (this.has(name)) { return; }
     $$('.overlay_badge').invoke('remove');
     $$('body')[0].insert({ bottom:

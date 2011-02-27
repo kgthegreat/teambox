@@ -179,7 +179,8 @@ module UsersHelper
           :pages => current_user.get_stat('pages'),
           :invites => current_user.get_stat('invites')
         },
-        :badges => current_user.badges
+        :badges => current_user.badges,
+        :show_badges => true
       }.to_json
     end
 
