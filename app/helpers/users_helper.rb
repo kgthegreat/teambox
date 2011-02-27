@@ -171,7 +171,14 @@ module UsersHelper
         :splash_screen => current_user.splash_screen,
         :collapse_activities => !!current_user.settings["collapse_activities"],
         :keyboard_shortcuts => !!current_user.settings["keyboard_shortcuts"],
-        :first_day_of_week => current_user.first_day_of_week
+        :first_day_of_week => current_user.first_day_of_week,
+        :stats => {
+          :projects => current_user.get_stat('projects'),
+          :conversations => current_user.get_stat('conversations'),
+          :tasks => current_user.get_stat('tasks'),
+          :pages => current_user.get_stat('pages'),
+          :invites => current_user.get_stat('invites')
+        }
       }.to_json
     end
 

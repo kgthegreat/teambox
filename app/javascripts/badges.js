@@ -1,10 +1,10 @@
 // Badges for achievements
 
 Badge = {
-  showBadge: function() {
+  showBadge: function(template) {
     $$('.overlay_badge').invoke('remove');
     $$('body')[0].insert({ bottom:
-      Mustache.to_html(Templates.badges.first_conversation)
+      Mustache.to_html(template)
     });
     var badge = $$('.overlay_badge')[0];
     new Effect.MoveBottom(badge, {
@@ -13,11 +13,12 @@ Badge = {
       duration: 2
     });
     badge.highlight({ duration: 3 });
-    this.showStars();
+    this.showStars(badge);
     Sound.play('/sounds/achievement.wav');
     return badge;
   },
-  showStars: function() {
+  showStars: function(container) {
+    container = container || $$('body')[0];
     for(var i=0; i<10; i++){
       var starting = {
         x: 16 + Math.floor(Math.random() * 470),
@@ -27,10 +28,10 @@ Badge = {
         src: '/famfamfam/star.png',
         style: 'position: fixed; ' +
                'bottom: '+starting.y+'px; ' +
-               'right: '+starting.x+'px'
+               'right: '+starting.x+'px; '
       });
       star.addClassName('badge_star');
-      $$('body')[0].insert({ bottom: star });
+      container.insert({ bottom: star });
       new Effect.Parallel([
         new Effect.MoveBottom(star, {
           sync: true,
@@ -45,9 +46,6 @@ Badge = {
           delay: Math.random()*2
       });
     }
-    setTimeout(function () {
-      $$('img.badge_star').invoke('remove');
-    }, 5000);
   }
 };
 
