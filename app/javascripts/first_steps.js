@@ -50,4 +50,17 @@ document.on("click", ".first_steps .steps img", function(e,el) {
 
 document.on("dom:loaded", function() {
   FirstSteps.showOverview();
+
+  // If the badge is not granted with JS, then we check the stats
+  if (my_user.stats.conversations > 0 && !Badge.has("first_conversation")) {
+    Badge.grant("first_conversation");
+  } else if (my_user.stats.tasks > 0 && !Badge.has("first_task")) {
+    Badge.grant("first_task");
+  } else if (my_user.stats.pages > 0 && !Badge.has("first_page")) {
+    Badge.grant("first_page");
+  } else if (my_user.stats.invites > 0 && !Badge.has("first_invite")) {
+    Badge.grant("first_invite");
+  } else if (my_user.stats.projects > 0 && !Badge.has("first_projects")) {
+    Badge.grant("first_project");
+  }
 });
