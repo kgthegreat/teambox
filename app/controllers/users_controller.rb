@@ -209,6 +209,7 @@ class UsersController < ApplicationController
 
   def grant_badge
     @current_user.grant_badge params[:badge]
+    head :ok
   end
 
   private

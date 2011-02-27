@@ -1,22 +1,34 @@
 // Badges for achievements
 
 Badge = {
-  showBadge: function(template) {
+  // Do I have this badge?
+  has: function(name) {
+    return my_user.badges.intersect([name]).length !== 0;
+  },
+  // Grant a badge, displaying its animation
+  grant: function(name) {
+    if (this.has(name)) { return; }
     $$('.overlay_badge').invoke('remove');
     $$('body')[0].insert({ bottom:
-      Mustache.to_html(template)
+      Mustache.to_html(Templates.badges[name])
     });
     var badge = $$('.overlay_badge')[0];
-    new Effect.MoveBottom(badge, {
+    var pop = new Effect.MoveBottom(badge, {
       bottom: 300,
       transition: Effect.Transitions.spring,
       duration: 2
     });
     badge.highlight({ duration: 3 });
-    this.showStars(badge);
     Sound.play('/sounds/achievement.wav');
+    this.showStars(badge);
+    // Save this badge to the database so it won't be repeated
+    my_user.badges.push(name);
+    var save = new Ajax.Request("/account/badge/"+name+"/grant");
+    // Redraw the First Steps panel if present
+    if ($$('.first_steps')[0]) { FirstSteps.showOverview(); }
     return badge;
   },
+  // Special effect when displaying a badge
   showStars: function(container) {
     container = container || $$('body')[0];
     for(var i=0; i<10; i++){
