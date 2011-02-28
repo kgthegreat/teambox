@@ -180,7 +180,7 @@ module UsersHelper
           :invites => current_user.get_stat('invites')
         },
         :badges => current_user.badges,
-        :show_badges => true
+        :show_badges => current_user.show_badges
       }.to_json
     end
 
