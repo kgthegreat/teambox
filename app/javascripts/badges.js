@@ -1,14 +1,30 @@
 // Badges for achievements
 
 Badge = {
+  // Check if it's time to grant any badges
+  // Badges can be granted via JS or after a full page load
+  checkAndGrantBadges: function() {
+    Badge.grant("first_conversation", my_user.stats.conversations > 0);
+    Badge.grant("first_task", my_user.stats.tasks > 0);
+    Badge.grant("first_page", my_user.stats.pages > 0);
+    Badge.grant("first_invite", my_user.stats.invites > 0);
+    Badge.grant("first_project", my_user.stats.projects > 0);
+  },
   // Do I have this badge?
   has: function(name) {
     return my_user.badges.intersect([name]).length !== 0;
   },
   // Grant a badge, displaying its animation
-  grant: function(name) {
-    if (!my_user.show_badges) { return; }
+  grant: function(name, condition) {
     if (this.has(name)) { return; }
+    // If condition is undefined or true, then we grant the badge
+    if (condition === false) { return; }
+    // Save this badge to the database so it won't be repeated
+    my_user.badges.push(name);
+    var save = new Ajax.Request("/account/badge/"+name+"/grant");
+    // Stop here if badges are disabled
+    if (!my_user.show_badges) { return; }
+    // Remove any badges visible now and show this one
     $$('.overlay_badge').invoke('remove');
     $$('body')[0].insert({ bottom:
       Mustache.to_html(Templates.badges[name])
@@ -22,11 +38,9 @@ Badge = {
     badge.highlight({ duration: 3 });
     Sound.play('/sounds/achievement.wav');
     this.showStars(badge);
-    // Save this badge to the database so it won't be repeated
-    my_user.badges.push(name);
-    var save = new Ajax.Request("/account/badge/"+name+"/grant");
-    // Redraw the First Steps panel if present
-    if ($$('.first_steps')[0]) { FirstSteps.showOverview(); }
+    // Fire an event that can be captured by other components
+    document.fire("badge:new_badge");
+    document.fire("badge:"+name);
     return badge;
   },
   // Special effect when displaying a badge
@@ -66,6 +80,14 @@ Badge = {
 document.on("click", ".overlay_badge", function(e,el) {
   e.stop();
   el.fade();
+});
+
+document.on("dom:loaded", function() {
+  Badge.checkAndGrantBadges();
+});
+
+document.on("stats:update", function() {
+  Badge.checkAndGrantBadges();
 });
 
 // Used to animate the bottom of a 'position: fixed' element
